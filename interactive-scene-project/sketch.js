@@ -1,6 +1,11 @@
-// Maze Game - Interactive Scene Program
+
+// Maze Game - Interactive Scene Project
 // Umair Khan
-// 
+// September 17th, 2021
+//
+// Extra for Experts:
+// - created my own shapes using polygons
+// - added sound effects
 
 
 
@@ -47,7 +52,7 @@ function findLocation(){
   }
 }
 
-//keyboardcontrols for player
+//keyboard controls for player
 function wasd() {
   //w
   if (keyIsDown(87)) {
