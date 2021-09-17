@@ -1,3 +1,0 @@
-# hollistic.github.io
-
-yooooooooooooooo
