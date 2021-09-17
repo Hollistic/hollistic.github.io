@@ -1,4 +1,4 @@
-// Maze Game - Interactive Scene Pro
+// Maze Game - Interactive Scene Program
 // Umair Khan
 // 
 
@@ -16,6 +16,7 @@ let speed = 2;
 //Collison
 let touchHazard = false;
 let touchBorder = false;
+let hit = false;
 
 //Screen Border
 const border = []; // stores the vertices of the screen border polygon
@@ -69,7 +70,7 @@ function wasd() {
 function drawPlayer(){
   rectMode(CORNER);
   stroke(0);
-  fill("white")
+  fill("white");
   rect(playerX, playerY, playerW, playerH);
   
 }
@@ -86,13 +87,15 @@ function drawWalls(){
   wall[0] = createVector(1, 50);
   wall[1] = createVector(200, 50);
   wall[2] = createVector(200, 80);
-  wall[3] = createVector(50, 30);
+  wall[3] = createVector(1, 80);
   
-  // Draw the polygon by iterating over 4 created vectors x/y stored in poly[]:
+  // Draw the polygon by iterating over 4 created vectors x/y stored in wall[]:
   beginShape();
   fill(244, 144, 9);
   noStroke();
-  for (const {x, y} of wall)  vertex(x, y);
+  for (const {x, y } of wall)  {
+    vertex(x, y);
+  }
   endShape(CLOSE);
   
 }
