@@ -19,8 +19,6 @@ let speed = 2;
 
 
 //Collison
-let touchHazard = false;
-let touchBorder = false;
 let hit = false;
 
 //Screen Border
@@ -82,13 +80,13 @@ function drawPlayer(){
 
 function drawWalls(){
   
-  //screen border vertices
+  //define the vertices of the canvas border polygon
   border[0] = createVector(0,0);
-  border[1] = createVector(width,0);
+  border[1] = createVector(width, 0);
   border[2] = createVector(width, height);
   border[3] = createVector(0, height);
   
-  //define the vertices of the hazards polygon
+  //define the vertices of the wall polygon
   wall[0] = createVector(1, 50);
   wall[1] = createVector(200, 50);
   wall[2] = createVector(200, 80);
