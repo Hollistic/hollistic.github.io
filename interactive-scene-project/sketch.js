@@ -8,15 +8,17 @@
 // - added sound effects
 
 
+//Level Values
+let level = 1; 
+let startPositionX; 
+let startPositionY;
 
 //Player Values
-let playerY = 25;
-let playerX = 25;
-let playerW = 10;
-let playerH = 10;
+let playerX = 1; 
+let playerY = 1; 
+let playerW = 10; 
+let playerH = 10; 
 let speed = 2;
-
-
 
 //Collison
 let hit = false;
@@ -25,7 +27,7 @@ let hit = false;
 const border = []; // stores the vertices of the screen border polygon
 
 //Polygon
-const wall = []; // stores the vertices of the level walls polygon
+let wall = []; // stores the vertices of the level walls polygon
 
 
 function setup() {
@@ -70,6 +72,12 @@ function wasd() {
   }
 }
 
+function checkLevel() {
+  if (level === "1") {
+    startPositionX = 20; startPositionY = 20; 
+  }
+}
+
 function drawPlayer(){
   rectMode(CORNER);
   stroke(0);
@@ -87,16 +95,18 @@ function drawWalls(){
   border[3] = createVector(0, height);
   
   //define the vertices of the wall polygon
-  wall[0] = createVector(1, 50);
+  wall[0] = createVector(1, 50); 
   wall[1] = createVector(200, 50);
   wall[2] = createVector(200, 80);
   wall[3] = createVector(1, 80);
+
+
   
   // Draw the polygon by iterating over 4 created vectors x/y stored in wall[]:
   beginShape();
   fill(244, 144, 9);
   noStroke();
-  for (const {x, y } of wall)  {
+  for (let {x, y} of wall)  {
     vertex(x, y);
   }
   endShape(CLOSE);
@@ -104,26 +114,12 @@ function drawWalls(){
 }
 
 function playerCollision(){
+  // hit is true if player touches the wall or screen border polygon
   hit = collideRectPoly(playerX, playerY, playerW, playerH, wall) || collideRectPoly(playerX, playerY, playerW, playerH, border);
   
   if (hit){
-    playerX = 20; playerY = 20;
+    playerX = startPositionX; playerY = startPositionY;
   }
   
-  // if(hit ? playerY = 10: playerX);
-  // if(hit ? playerX = 10: playerY);
-  
-  // if (playerX >= width - playerW){
-  //   playerX = 0;
-  // }
-  // else if (playerX <= 0 + playerW){
-  //   playerX = width;
-  // }
-  // else if (playerY <= 0- playerH){
-  //   playerY = height;
-  // }
-  // else if (playerY >= height + playerH){
-  //   playerY = 0;
-  // }
-  
+
 }
