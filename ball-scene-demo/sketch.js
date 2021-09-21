@@ -18,6 +18,7 @@ function setup() {
   window.setInterval(spawnBall, 500);
 }
 
+//main draw function
 function draw() {
   background(220);
   
@@ -25,6 +26,7 @@ function draw() {
   displayBall(); 
 }
 
+//on mouse press
 function mousePressed() {
   spawnBall();
   ballArray[ballArray.length-1].x = mouseX;
