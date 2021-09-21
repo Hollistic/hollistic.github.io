@@ -19,9 +19,11 @@ let playerY = 1;
 let playerW = 10; 
 let playerH = 10; 
 let speed = 2;
+let moving = true;
 
 //Collison
 let hit = false;
+let hitDoor = false;
 
 //Screen Border
 const border = []; // stores the vertices of the screen border polygon
@@ -29,16 +31,27 @@ const border = []; // stores the vertices of the screen border polygon
 //Polygon
 let wall = []; // stores the vertices of the level walls polygon
 
+let door = [];
+
 
 function setup() {
   createCanvas(600, 400);
+
+  //define the vertices of the canvas border
+  border[0] = createVector(0,0);
+  border[1] = createVector(width, 0);
+  border[2] = createVector(width, height);
+  border[3] = createVector(0, height);
 }
 
+//main draw loop
 function draw() {
   background(220);
   
+  checkLevel();
   findLocation();
   drawWalls();
+  drawDoor();
   drawPlayer();
   wasd();
   playerCollision();
@@ -55,29 +68,32 @@ function findLocation(){
 //keyboard controls for player
 function wasd() {
   //w
-  if (keyIsDown(87)) {
-    playerY -= speed;
-  }
-  //a
-  if (keyIsDown(65)) {
-    playerX -= speed;
-  } 
-  //s
-  if (keyIsDown(83)) {
-    playerY += speed;
-  } 
-  //d
-  if (keyIsDown(68)) {
-    playerX += speed;
+  if (moving){
+    if (keyIsDown(87)) {
+      playerY -= speed;
+    }
+    //a
+    if (keyIsDown(65)) {
+      playerX -= speed;
+    } 
+    //s
+    if (keyIsDown(83)) {
+      playerY += speed;
+    } 
+    //d
+    if (keyIsDown(68)) {
+      playerX += speed;
+    }
   }
 }
 
 function checkLevel() {
-  if (level === "1") {
+  if (level === 1) {
     startPositionX = 20; startPositionY = 20; 
   }
 }
 
+//draw the player on the screen
 function drawPlayer(){
   rectMode(CORNER);
   stroke(0);
@@ -88,21 +104,22 @@ function drawPlayer(){
 
 function drawWalls(){
   
-  //define the vertices of the canvas border polygon
-  border[0] = createVector(0,0);
-  border[1] = createVector(width, 0);
-  border[2] = createVector(width, height);
-  border[3] = createVector(0, height);
-  
   //define the vertices of the wall polygon
   wall[0] = createVector(1, 50); 
   wall[1] = createVector(200, 50);
   wall[2] = createVector(200, 80);
   wall[3] = createVector(1, 80);
 
+  //
+  door[0] = createVector(200, 0); 
+  door[1] = createVector(250, 0);
+  door[2] = createVector(250, 50);
+  door[3] = createVector(200, 50);
+
 
   
   // Draw the polygon by iterating over 4 created vectors x/y stored in wall[]:
+  push();
   beginShape();
   fill(244, 144, 9);
   noStroke();
@@ -110,16 +127,44 @@ function drawWalls(){
     vertex(x, y);
   }
   endShape(CLOSE);
+  pop();
+
+}
+
+function drawDoor() {
+
+  door[0] = createVector(200, 0); 
+  door[1] = createVector(250, 0);
+  door[2] = createVector(250, 50);
+  door[3] = createVector(200, 50);
+
+  push();
+  beginShape();
+  fill("grey");
+  for (let {x, y} of door)  {
+    vertex(x, y);
+  }
+  endShape(CLOSE);
+  pop();
   
 }
 
-function playerCollision(){
+function playerCollision() {
   // hit is true if player touches the wall or screen border polygon
   hit = collideRectPoly(playerX, playerY, playerW, playerH, wall) || collideRectPoly(playerX, playerY, playerW, playerH, border);
-  
+  hitDoor = collideRectPoly(playerX, playerY, playerW, playerH, door);
+
   if (hit){
     playerX = startPositionX; playerY = startPositionY;
   }
-  
-
+  //checks if touching door
+  else if (hitDoor){
+    for (let {x, y} of door){
+      if (playerX < door[0].x){
+        playerX -= 0.5;
+        print(x);
+    
+      }
+    }
+  }
 }
