@@ -7,6 +7,7 @@
 // - created my own shapes using polygons
 // - added sound effects
 
+//to-do: Need to fix collision for top and bottom of door, add music, and create full level.
 
 //Level Values
 let level = 1; 
@@ -23,7 +24,11 @@ let moving = true;
 
 //Collison
 let hit = false;
+
+//door
+let door = [];
 let hitDoor = false;
+let doorOpen = false;
 
 //Screen Border
 const border = []; // stores the vertices of the screen border polygon
@@ -31,7 +36,13 @@ const border = []; // stores the vertices of the screen border polygon
 //Polygon
 let wall = []; // stores the vertices of the level walls polygon
 
-let door = [];
+//music
+let music;
+
+
+function preload() {
+  music = loadSound("add music here");
+}
 
 
 function setup() {
@@ -105,17 +116,10 @@ function drawPlayer(){
 function drawWalls(){
   
   //define the vertices of the wall polygon
-  wall[0] = createVector(1, 50); 
-  wall[1] = createVector(200, 50);
-  wall[2] = createVector(200, 80);
+  wall[0] = createVector(1, 50);
+  wall[1] = createVector(150, 50);
+  wall[2] = createVector(150, 80);
   wall[3] = createVector(1, 80);
-
-  //
-  door[0] = createVector(200, 0); 
-  door[1] = createVector(250, 0);
-  door[2] = createVector(250, 50);
-  door[3] = createVector(200, 50);
-
 
   
   // Draw the polygon by iterating over 4 created vectors x/y stored in wall[]:
@@ -133,10 +137,10 @@ function drawWalls(){
 
 function drawDoor() {
 
-  door[0] = createVector(200, 0); 
-  door[1] = createVector(250, 0);
-  door[2] = createVector(250, 50);
-  door[3] = createVector(200, 50);
+  door[0] = createVector(200, 50); 
+  door[1] = createVector(250, 50);
+  door[2] = createVector(250, 100);
+  door[3] = createVector(200, 100);
 
   push();
   beginShape();
@@ -157,13 +161,23 @@ function playerCollision() {
   if (hit){
     playerX = startPositionX; playerY = startPositionY;
   }
+
   //checks if touching door
-  else if (hitDoor){
+  if (hitDoor){
     for (let {x, y} of door){
-      if (playerX < door[0].x){
+      if (playerX <= door[0].x){
         playerX -= 0.5;
-        print(x);
-    
+      }
+      if (playerX >= door[3].x){
+        playerX += 0.5;
+      }
+
+      if (playerY <= door[1].y) {
+        playerY -= 0.5;
+      }
+
+      if (playerY >= door[2].y) {
+        playerY += 0.5;
       }
     }
   }
