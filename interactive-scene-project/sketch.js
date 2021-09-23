@@ -7,7 +7,7 @@
 // - created my own shapes using polygons
 // - added sound effects
 
-//to-do: Need to fix collision for top and bottom of door, add music, and create full level.
+//to-do: Need to fix collision for bottom of door, add mouse for door add music, and create full level.
 
 //Level Values
 let level = 1; 
@@ -41,8 +41,9 @@ let music;
 
 
 function preload() {
-  music = loadSound("add music here");
+  music = loadSound("assets/gigakoops-level-1-fire-mountain.mp3");
 }
+
 
 
 function setup() {
@@ -53,6 +54,9 @@ function setup() {
   border[1] = createVector(width, 0);
   border[2] = createVector(width, height);
   border[3] = createVector(0, height);
+
+  //start music loop
+  music.loop();
 }
 
 //main draw loop
@@ -117,8 +121,8 @@ function drawWalls(){
   
   //define the vertices of the wall polygon
   wall[0] = createVector(1, 50);
-  wall[1] = createVector(150, 50);
-  wall[2] = createVector(150, 80);
+  wall[1] = createVector(170, 50);
+  wall[2] = createVector(130, 130);
   wall[3] = createVector(1, 80);
 
   
@@ -136,7 +140,6 @@ function drawWalls(){
 }
 
 function drawDoor() {
-
   door[0] = createVector(200, 50); 
   door[1] = createVector(250, 50);
   door[2] = createVector(250, 100);
@@ -151,6 +154,8 @@ function drawDoor() {
   endShape(CLOSE);
   pop();
   
+
+
 }
 
 function playerCollision() {
@@ -158,6 +163,7 @@ function playerCollision() {
   hit = collideRectPoly(playerX, playerY, playerW, playerH, wall) || collideRectPoly(playerX, playerY, playerW, playerH, border);
   hitDoor = collideRectPoly(playerX, playerY, playerW, playerH, door);
 
+  //if player hits a wall or border return to start position
   if (hit){
     playerX = startPositionX; playerY = startPositionY;
   }
@@ -165,19 +171,24 @@ function playerCollision() {
   //checks if touching door
   if (hitDoor){
     for (let {x, y} of door){
-      if (playerX <= door[0].x){
-        playerX -= 0.5;
-      }
-      if (playerX >= door[3].x){
-        playerX += 0.5;
-      }
-
       if (playerY <= door[1].y) {
         playerY -= 0.5;
+        console.log("hit from top");
+      }
+      
+      else if (playerY >= door[2].y) {
+        playerY += 0.5;
+        console.log("hit from bottom");
       }
 
-      if (playerY >= door[2].y) {
-        playerY += 0.5;
+      else if (playerX <= door[0].x) {
+        playerX -= 0.5;
+        console.log("hit from left");
+      }
+
+      else if (playerX >= door[3].x) {
+        playerX += 0.5;
+        console.log("hit from right");
       }
     }
   }
