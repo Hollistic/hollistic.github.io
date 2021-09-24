@@ -7,11 +7,12 @@
 // - created my own shapes using polygons
 // - added sound effects
 
-//to-do: Need to fix collision for bottom of door, add mouse for door add music, and create full level.
+//to-do: Need to fix collision for bottom of door, add mouse for door, add music, and create full level.
+
 
 //Level Values
 let level = 1; 
-let startPositionX; 
+let startPositionX;
 let startPositionY;
 
 //Player Values
@@ -20,21 +21,21 @@ let playerY = 1;
 let playerW = 10; 
 let playerH = 10; 
 let speed = 2;
-let moving = true;
 
-//Collison
-let hit = false;
+//Screen Border
+const border = []; // stores the vertices of the screen border polygon
+
+//walls
+let wallPoly1 = []; // stores the vertices of the level walls polygon
+let wallPoly2 = [];
 
 //door
 let door = [];
 let hitDoor = false;
 let doorOpen = false;
 
-//Screen Border
-const border = []; // stores the vertices of the screen border polygon
-
-//Polygon
-let wall = []; // stores the vertices of the level walls polygon
+//Collison
+let hit = false;
 
 //music
 let music;
@@ -83,23 +84,22 @@ function findLocation(){
 //keyboard controls for player
 function wasd() {
   //w
-  if (moving){
-    if (keyIsDown(87)) {
-      playerY -= speed;
-    }
-    //a
-    if (keyIsDown(65)) {
-      playerX -= speed;
-    } 
-    //s
-    if (keyIsDown(83)) {
-      playerY += speed;
-    } 
-    //d
-    if (keyIsDown(68)) {
-      playerX += speed;
-    }
+  if (keyIsDown(87)) {
+    playerY -= speed;
   }
+  //a
+  if (keyIsDown(65)) {
+    playerX -= speed;
+  } 
+  //s
+  if (keyIsDown(83)) {
+    playerY += speed;
+  } 
+  //d
+  if (keyIsDown(68)) {
+    playerX += speed;
+  }
+  
 }
 
 function checkLevel() {
@@ -118,25 +118,25 @@ function drawPlayer(){
 }
 
 function drawWalls(){
-  
-  //define the vertices of the wall polygon
-  wall[0] = createVector(1, 50);
-  wall[1] = createVector(170, 50);
-  wall[2] = createVector(130, 130);
-  wall[3] = createVector(1, 80);
+  if (level === 1){
+    //define the vertices of the wall polygon
+    wallPoly1[0] = createVector(1, 50);
+    wallPoly1[1] = createVector(170, 50);
+    wallPoly1[2] = createVector(281, 120);
+    wallPoly1[3] = createVector(1, 80);
 
-  
-  // Draw the polygon by iterating over 4 created vectors x/y stored in wall[]:
-  push();
-  beginShape();
-  fill(244, 144, 9);
-  noStroke();
-  for (let {x, y} of wall)  {
-    vertex(x, y);
+    
+    // Draw the polygon by iterating over 4 created vectors x/y stored in wall[]:
+    push();
+    beginShape();
+    fill(244, 144, 9);
+    noStroke();
+    for (let {x, y} of wallPoly1)  {
+      vertex(x, y);
+    }
+    endShape(CLOSE);
+    pop();
   }
-  endShape(CLOSE);
-  pop();
-
 }
 
 function drawDoor() {
@@ -160,7 +160,7 @@ function drawDoor() {
 
 function playerCollision() {
   // hit is true if player touches the wall or screen border polygon
-  hit = collideRectPoly(playerX, playerY, playerW, playerH, wall) || collideRectPoly(playerX, playerY, playerW, playerH, border);
+  hit = collideRectPoly(playerX, playerY, playerW, playerH, wallPoly1) || collideRectPoly(playerX, playerY, playerW, playerH, border);
   hitDoor = collideRectPoly(playerX, playerY, playerW, playerH, door);
 
   //if player hits a wall or border return to start position
