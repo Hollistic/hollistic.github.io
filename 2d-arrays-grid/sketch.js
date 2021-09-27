@@ -1,15 +1,66 @@
-// Project Title
-// Your Name
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// 2d array grid example
+// Umair
+// 9/27/2021
+
+let gridSize = 10;
+let grid;
 
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  // create the largest square possible depending on the size of the screen
+  if (windowWidth > windowHeight){
+    createCanvas(windowHeight, windowHeight);
+  }
+  else {
+    createCanvas(windowWidth, windowWidth);
+  }
+
+  grid = createRandomGrid(gridSize);
 }
 
 function draw() {
   background(220);
+  displayGrid();
+}
+
+function createEmptyGrid(size) {
+  let emptyArray = [];
+  for (let y=0; y<size; y++) {
+    emptyArray.push([]);
+    for (let x=0; x<size; x++) {
+      emptyArray[y].push(0);
+    }
+  }
+  return emptyArray;
+} 
+
+function createRandomGrid(size) {
+  let emptyArray = [];
+  for (let y=0; y<size; y++) {
+    emptyArray.push([]);
+    for (let x=0; x<size; x++) {
+      if (random(0, 100) < 50) {
+        emptyArray[y].push(0);
+      }
+      else {
+        emptyArray[y].push(1);
+      }
+    }
+  }
+  return emptyArray;
+}
+
+function displayGrid() {
+  let cellSize = width/gridSize;
+  for (let y=0; y<grid.length; y++) {
+    for (let x=0; x<grid[y].length; x++) {
+      if(grid[y][x] === 0) {
+        fill("white");
+      }
+      else if(grid[y][x] === 1) {
+        fill("black");
+      }
+      rect(x*cellSize, y*cellSize, cellSize, cellSize);
+    }
+  }
 }
