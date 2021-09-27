@@ -22,6 +22,7 @@ function setup() {
 function draw() {
   background(220);
   
+  checkBallTouchingMouse();
   moveBall();
   displayBall(); 
 }
@@ -34,6 +35,14 @@ function mousePressed() {
   ballArray[ballArray.length-1].y = mouseY; 
 }
 
+function checkBallTouchingMouse() {
+  for (let i=ballArray.length-1; i >= 0 ; i--) {
+    let howFarAway = dist(ballArray[i].x, ballArray[i].y, mouseX, mouseY);
+    if (howFarAway < ballArray[i].radius) {
+      ballArray.splice(i, 1);
+    }
+  }
+}
 function spawnBall() {
   let ball = {
     x: random(width),
