@@ -2,9 +2,10 @@
 // Umair Khan
 // 9/29/2021
 
-let gridSize = 15;
+let gridSize = 20;
 let grid;
 let cellSize;
+let autoPlay = false;
 
 function setup() {
   if (windowHeight < windowWidth) {
@@ -23,6 +24,10 @@ function draw() {
   background(220);
 
   displayGrid();
+
+  if (autoPlay && frameCount % 10 === 0) {
+    update();
+  }
 }
 
 function keyPressed() {
@@ -34,6 +39,9 @@ function keyPressed() {
   }
   if (key === " ") {
     update();
+  }
+  if (key === "p"){
+    autoPlay = !autoPlay;
   }
 }
 
