@@ -2,10 +2,15 @@
 // Umair Khan
 // 9/29/2021
 
-let gridSize = 20;
+let gridSize = 40;
 let grid;
 let cellSize;
 let autoPlay = false;
+let gun;
+
+function preload() {
+  gun = loadJSON("assets/gosper-gun.json");
+}
 
 function setup() {
   if (windowHeight < windowWidth) {
@@ -40,8 +45,11 @@ function keyPressed() {
   if (key === " ") {
     update();
   }
-  if (key === "p"){
+  if (key === "p") {
     autoPlay = !autoPlay;
+  }
+  if (key === "g") {
+    grid = gun;
   }
 }
 
