@@ -1,4 +1,4 @@
-// Minesweeper Game
+// Grid Base Game - Minesweeper
 // Umair Khan
 // 9/28/2021
 //
