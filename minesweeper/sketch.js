@@ -2,12 +2,15 @@
 // Umair Khan
 // 9/28/2021
 //
-// Extras for experts
-//
+// Extras for experts/to do
+// implemented flood fill algorithm
+// implemented audio
+// main menu and general polish
 
 let gridSize = 10;
 let grid;
 let cellSize;
+let gameLost = false;
 
 function setup() {
   if (windowHeight < windowWidth) {
@@ -33,15 +36,18 @@ function mousePressed() {
     let cellX = Math.floor(mouseX/cellSize); 
     let cellY = Math.floor(mouseY/cellSize); 
 
-    blankSpace(cellX, cellY);
+    blankSpaceClicked(cellX, cellY);
   }
 }
 
 //clicked blank
-function blankSpace(x, y) {
+function blankSpaceClicked(x, y) {
   if (x>=0 && x<gridSize && y>=0 && y<gridSize) {
     if (grid[y][x] === 0){
       grid[y][x] = 1;
+    }
+    if (grid[y][x] === "bomb") {
+      gameLost = true;
     }
   }
 }
