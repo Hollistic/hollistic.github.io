@@ -58,7 +58,7 @@ function createRandomArray(howLarge) {
   for (let y = 0; y < howLarge; y++) {
     newArray.push([]);
     for(let x = 0; x < howLarge; x++) {
-      if (random(0, 100) > 10){
+      if (random(0, 100) > 30){
         newArray[y].push(0);
       }
       else {
