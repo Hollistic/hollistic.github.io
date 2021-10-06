@@ -69,47 +69,58 @@ function createRandomArray(howLarge) {
     newArray.push([]);
     for(let x = 0; x < howLarge; x++) {
       if (random(0, 100) > 30){
-        newArray[y].push(10);
+        newArray[y].push(0);
       }
       else {
         newArray[y].push("bomb");
       }
     }
   }
+  countAdjacentBomb();
   return newArray;
 }
 
 function countAdjacentBomb() {
 
-  //current cell [y][x]
+  for (let y=0; y<gridSize; y++) {
+    for (let x=0; x<gridSize; x++) {
+      //current cell [y][x]
+      if (grid[y][x] === "bomb") {
+        if (x-1>=0 && x+1<gridSize && y-1>=0 && y+1<gridSize) {
+          grid[y-1][x] += 1; //north [y-1][x]
+          
+          grid[y][x+1] += 1; //east [y][x+1]
 
-  //north [y-1][x]
+          grid[y+1][x] += 1; //south [y+1][x]
 
-  //east [y][x+1]
+          grid[y][x-1] += 1; //west [y][x-1]
 
-  //south [y+1][x]
+          grid[y-1][x+1] += 1; //north-east [y-1][x+1]
 
-  //west [y][x-1]
+          grid[y+1][x+1] += 1; //south-east [y+1][x+1]
+          
+          grid[y-1][x-1] += 1; //north-west [y-1][x-1]
 
-  //north-east [y-1][x+1]
+          grid[y+1][x-1] += 1; //south-west [y+1][x-1]
+        }
+      }
+    }
+  }
+}
 
-  //south-east [y+1][x+1]
-  
-  //north-west [y-1][x-1]
-
-  //south-west [y+1][x-1]
-
+function drawNumbers() {
+  for (let y=0; y<gridSize; y++) {
+    for (let x=0; x<gridSize; x++) {
+      fill("black");
+    }
+  }
 }
 
 function displayGrid() {
   for (let y=0; y < gridSize; y++) {
     for (let x=0; x < gridSize; x++) {
-      //uncovered
-      if (grid[y][x] === 10){
-        fill("grey");
-      }
       //empty
-      else if (grid[y][x] === 1) {
+      if (grid[y][x] === 0) { 
         fill("white");
       }
       //bombs
