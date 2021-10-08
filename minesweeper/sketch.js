@@ -29,6 +29,8 @@ function setup() {
   grid = createRandomArray(gridSize);
 
   cellSize = width / gridSize;
+
+  countAdjacentBomb();
 }
 
 function windowResized() {
@@ -56,7 +58,7 @@ function uncoveredSquareClicked(x, y) {
     if (grid[y][x] === 10){
       grid[y][x] = 1;
     }
-    if (grid[y][x] === "bomb") {
+    if (grid[y][x] === "*") {
       gameLost = true;
     }
   }
@@ -72,11 +74,10 @@ function createRandomArray(howLarge) {
         newArray[y].push(0);
       }
       else {
-        newArray[y].push("bomb");
+        newArray[y].push("*");
       }
     }
   }
-  countAdjacentBomb();
   return newArray;
 }
 
@@ -85,24 +86,28 @@ function countAdjacentBomb() {
   for (let y=0; y<gridSize; y++) {
     for (let x=0; x<gridSize; x++) {
       //current cell [y][x]
-      if (grid[y][x] === "bomb") {
-        if (x-1>=0 && x+1<gridSize && y-1>=0 && y+1<gridSize) {
+      if (grid[y][x] === "*") {
+        //sanity checks are created for each individual adjacent square to check if it's outside of the array or a bomb
+        if (y-1 > 0 && y-1 !== "*") {
           grid[y-1][x] += 1; //north [y-1][x]
-          
-          grid[y][x+1] += 1; //east [y][x+1]
-
-          grid[y+1][x] += 1; //south [y+1][x]
-
-          grid[y][x-1] += 1; //west [y][x-1]
-
-          grid[y-1][x+1] += 1; //north-east [y-1][x+1]
-
-          grid[y+1][x+1] += 1; //south-east [y+1][x+1]
-          
-          grid[y-1][x-1] += 1; //north-west [y-1][x-1]
-
-          grid[y+1][x-1] += 1; //south-west [y+1][x-1]
         }
+        if (x+1 < gridSize[y].length && x+1 !== "*") {
+          grid[y][x+1] += 1; //east [y][x+1]
+        }
+        if (y+1 < gridSize.length && y+1 !== "*") {        
+          grid[y+1][x] += 1; //south [y+1][x]
+        }
+        if (x-1 > 0 && x-1 !== "*") {
+          grid[y][x-1] += 1; //west [y][x-1]
+        }
+        if (y-1 > 0 && x+1 < gridSize[y].length && y-1 !== "*" && x+1 !== "*") {
+          grid[y-1][x+1] += 1; //north-east [y-1][x+1]
+        }
+        grid[y+1][x+1] += 1; //south-east [y+1][x+1]
+        
+        grid[y-1][x-1] += 1; //north-west [y-1][x-1]
+
+        grid[y+1][x-1] += 1; //south-west [y+1][x-1]
       }
     }
   }
@@ -124,7 +129,7 @@ function displayGrid() {
         fill("white");
       }
       //bombs
-      else if (grid[y][x] === "bomb") {
+      else if (grid[y][x] === "*") {
         fill("red"); 
       }
       rect(x*cellSize, y*cellSize, cellSize, cellSize);
