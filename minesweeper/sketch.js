@@ -16,6 +16,13 @@ let grid;
 let cellSize;
 let gameLost = false;
 
+let bombSprite;
+
+//preload
+function preload() {
+  bombSprite = loadImage("assets/bomb.png");
+}
+
 //setup
 function setup() {
   //creates largest square possible
@@ -85,29 +92,33 @@ function countAdjacentBomb() {
 
   for (let y=0; y<gridSize; y++) {
     for (let x=0; x<gridSize; x++) {
-      //current cell [y][x]
+      // current cell [y][x]
       if (grid[y][x] === "*") {
         //sanity checks are created for each individual adjacent square to check if it's outside of the array or a bomb
         if (y-1 > 0 && y-1 !== "*") {
           grid[y-1][x] += 1; //north [y-1][x]
         }
-        if (x+1 < gridSize[y].length && x+1 !== "*") {
+        if (x+1 < gridSize[y] && x+1 !== "*") {
           grid[y][x+1] += 1; //east [y][x+1]
         }
-        if (y+1 < gridSize.length && y+1 !== "*") {        
+        if (y+1 < gridSize && y+1 !== "*") {        
           grid[y+1][x] += 1; //south [y+1][x]
         }
         if (x-1 > 0 && x-1 !== "*") {
           grid[y][x-1] += 1; //west [y][x-1]
         }
-        if (y-1 > 0 && x+1 < gridSize[y].length && y-1 !== "*" && x+1 !== "*") {
+        if (y-1 > 0 && x+1 < gridSize[y] && y-1 !== "*" && x+1 !== "*") {
           grid[y-1][x+1] += 1; //north-east [y-1][x+1]
         }
-        grid[y+1][x+1] += 1; //south-east [y+1][x+1]
-        
-        grid[y-1][x-1] += 1; //north-west [y-1][x-1]
-
-        grid[y+1][x-1] += 1; //south-west [y+1][x-1]
+        if (y+1 < gridSize && x+1 < gridSize[y] && y+1 !== "*" && x+1 !== "*") {
+          grid[y+1][x+1] += 1; //south-east [y+1][x+1]
+        }
+        if (y-1 > 0 && x-1 > 0 && y-1 !== "*" && x-1 !== "*") {
+          grid[y-1][x-1] += 1; //north-west [y-1][x-1]
+        }
+        if (y+1 < gridSize && x-1 > 0 && y+1 !== "*" && x-1 !== "*") {
+          grid[y+1][x-1] += 1; //south-west [y+1][x-1]
+        }
       }
     }
   }
@@ -127,12 +138,17 @@ function displayGrid() {
       //empty
       if (grid[y][x] === 0) { 
         fill("white");
+        rect(x*cellSize, y*cellSize, cellSize, cellSize);
       }
       //bombs
       else if (grid[y][x] === "*") {
-        fill("red"); 
+        image(bombSprite, x*cellSize, y*cellSize, cellSize, cellSize);
       }
-      rect(x*cellSize, y*cellSize, cellSize, cellSize);
+
+      else {
+        rect(x*cellSize, y*cellSize, cellSize, cellSize);
+      }
+    
     }
 
   }
