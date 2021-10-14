@@ -62,7 +62,17 @@ function mousePressed() {
 }
 
 class Cell {
-  obstructor() {
+  constructor() {
+    
+    this.isRevealed = false;
+    this.isBomb = false;
+  }
+
+  checkBomb() {
+
+  }
+
+  floodFill() {
 
   }
 }
@@ -96,41 +106,41 @@ function createArray(howLarge) {
   return newArray;
 }
 
-// function countAdjacentBomb() {
+function countAdjacentBomb() {
 
-//   for (let y=0; y<gridSize; y++) {
-//     for (let x=0; x<gridSize; x++) {
-//       // current cell [y][x]
-//       if (grid[y][x] === "*") {
-//         //sanity checks are created for each individual adjacent square to check if it's outside of the array or a bomb
-//         if (y-1 > 0 && y-1 !== "*") {
-//           grid[y-1][x] += 1; //north [y-1][x]
-//         }
-//         if (x+1 < gridSize[y] && x+1 !== "*") {
-//           grid[y][x+1] += 1; //east [y][x+1]
-//         }
-//         if (y+1 < gridSize && y+1 !== "*") {        
-//           grid[y+1][x] += 1; //south [y+1][x]
-//         }
-//         if (x-1 > 0 && x-1 !== "*") {
-//           grid[y][x-1] += 1; //west [y][x-1]
-//         }
-//         if (y-1 > 0 && x+1 < gridSize[y] && y-1 !== "*" && x+1 !== "*") {
-//           grid[y-1][x+1] += 1; //north-east [y-1][x+1]
-//         }
-//         if (y+1 < gridSize && x+1 < gridSize[y] && y+1 !== "*" && x+1 !== "*") {
-//           grid[y+1][x+1] += 1; //south-east [y+1][x+1]
-//         }
-//         if (y-1 > 0 && x-1 > 0 && y-1 !== "*" && x-1 !== "*") {
-//           grid[y-1][x-1] += 1; //north-west [y-1][x-1]
-//         }
-//         if (y+1 < gridSize && x-1 > 0 && y+1 !== "*" && x-1 !== "*") {
-//           grid[y+1][x-1] += 1; //south-west [y+1][x-1]
-//         }
-//       }
-//     }
-//   }
-// }
+  for (let y=0; y<gridSize; y++) {
+    for (let x=0; x<gridSize; x++) {
+      // current cell [y][x]
+      if (grid[y][x] === "*") {
+        //sanity checks are created for each individual adjacent square to check if it's outside of the array or a bomb
+        if (y-1 > 0 && y-1 !== "*") {
+          grid[y-1][x] += 1; //north [y-1][x]
+        }
+        if (x+1 < gridSize[y] && x+1 !== "*") {
+          grid[y][x+1] += 1; //east [y][x+1]
+        }
+        if (y+1 < gridSize && y+1 !== "*") {        
+          grid[y+1][x] += 1; //south [y+1][x]
+        }
+        if (x-1 > 0 && x-1 !== "*") {
+          grid[y][x-1] += 1; //west [y][x-1]
+        }
+        if (y-1 > 0 && x+1 < gridSize[y] && y-1 !== "*" && x+1 !== "*") {
+          grid[y-1][x+1] += 1; //north-east [y-1][x+1]
+        }
+        if (y+1 < gridSize && x+1 < gridSize[y] && y+1 !== "*" && x+1 !== "*") {
+          grid[y+1][x+1] += 1; //south-east [y+1][x+1]
+        }
+        if (y-1 > 0 && x-1 > 0 && y-1 !== "*" && x-1 !== "*") {
+          grid[y-1][x-1] += 1; //north-west [y-1][x-1]
+        }
+        if (y+1 < gridSize && x-1 > 0 && y+1 !== "*" && x-1 !== "*") {
+          grid[y+1][x-1] += 1; //south-west [y+1][x-1]
+        }
+      }
+    }
+  }
+}
 
 // function drawNumbers() {
 //   for (let y=0; y<gridSize; y++) {
