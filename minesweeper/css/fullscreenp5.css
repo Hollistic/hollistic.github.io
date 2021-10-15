@@ -3,7 +3,14 @@ body, html {
     padding: 0;
     margin: 0;
     height: 100%;
-    overflow: hidden;
+}
+
+h1 {
+    padding-bottom:700px;
+    padding-right: 200px;
+    font-size: 50;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
 }
 
 body {
