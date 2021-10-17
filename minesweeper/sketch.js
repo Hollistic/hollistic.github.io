@@ -16,10 +16,12 @@ let cellSize;
 
 let bombSprite;
 let bombAmount = 15;
+let boomSound;
 
 //preload
 function preload() {
   bombSprite = loadImage("assets/bomb.png");
+  boomSound = loadSound("assets/vine-boom.mp3");
 }
 
 //setup
@@ -95,6 +97,7 @@ function checkMousePress() {
           if (grid[y][x].mouseOnCell(mouseX, mouseY)) {
             grid[y][x].revealCells();
             if (grid[y][x].isBomb) {
+              boomSound.play();
               gameLost = true;
             }
           }
