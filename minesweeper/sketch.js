@@ -3,8 +3,8 @@
 // 9/28/2021
 //
 // Extra for experts:
-// -used oop with classes to create individual cell objects for each index in the 2d array
-// -implemented flood fill algorithm
+// -used oop with classes to create individual cell objects for each index value in the 2d array
+// -implemented flood fill algorithm for adjacent cells when revealed
 // -added sound effects
 // -created a main menu
 
