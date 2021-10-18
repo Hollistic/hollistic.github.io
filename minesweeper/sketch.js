@@ -15,7 +15,7 @@ let grid;
 let cellSize;
 
 let bombSprite;
-let bombAmount = 15;
+let bombAmount = 0;
 let boomSound;
 
 //preload
@@ -74,38 +74,29 @@ function draw() {
 
   checkMousePress();
 
+  //if the game is lost, reveal the board, if "r" pressed reset the board
   if (gameLost === true) {
     for (let y = 0; y < gridSize; y++) {
       for (let x = 0; x < gridSize; x++){
         grid[y][x].isRevealed = true;
+        if (keyIsDown(82)) {
+          setup();
+          gameLost = false;
+        }
       }
     }
+    //displays the game over text on game lost
     fill("red");
     textAlign(CENTER);
-    textSize(100);
+    textSize(width/10);
     text("boom", width/2, height/2);
+    fill("yellow");
+    textSize(width/30);
+    text("Press R to play again!", width/2, height/1.8);
   }
 }
 
 // Will check for mouse presses on grid, (x,y) will be tested by mouseX, mouseY
-
-function checkMousePress() {
-  if (mouseIsPressed) {
-    if (mouseButton === LEFT) {
-      for (let y = 0; y < gridSize; y++) {
-        for (let x = 0; x < gridSize; x++){
-          if (grid[y][x].mouseOnCell(mouseX, mouseY)) {
-            grid[y][x].revealCells();
-            if (grid[y][x].isBomb) {
-              boomSound.play();
-              gameLost = true;
-            }
-          }
-        }
-      }
-    }
-  }
-}
 
 class Cell {
   constructor(x, y, size) {
@@ -115,14 +106,14 @@ class Cell {
     this.isRevealed = false;
     this.isBomb = false;
     this.neighbourAmount = 0;
-    this.neighbourColors = ["blue", "green", "red", "purple", "maroon", "cyan", "black", "grey"];
+    this.neighbourColors = ["blue", "green", "red", "purple", "maroon", "turquoise", "black", "grey"];
   }
   
   //creates a random bomb in the grid 
   createBomb() {
     if (random(0, 100) > 85) {
       this.isBomb = true;
-      bombAmount--;
+      bombAmount++;
     }
     else {
       this.isBomb = false;
@@ -147,7 +138,7 @@ class Cell {
         if (this.neighbourAmount > 0) {
           fill(this.neighbourColors[this.neighbourAmount-1]);
           textAlign(CENTER);
-          textSize(30);
+          textSize(cellSize/2);
           text(this.neighbourAmount, this.x + this.size/2, this.y+ this.size/1.5);
         }
       }
@@ -214,6 +205,27 @@ class Cell {
     return x > this.x && x < this.x + this.size && y > this.y && y < this.y + this.size;
   }
 
+
+
+}
+
+
+function checkMousePress() {
+  if (mouseIsPressed) {
+    if (mouseButton === LEFT) {
+      for (let y = 0; y < gridSize; y++) {
+        for (let x = 0; x < gridSize; x++){
+          if (grid[y][x].mouseOnCell(mouseX, mouseY)) {
+            grid[y][x].revealCells();
+            if (grid[y][x].isBomb) {
+              boomSound.play();
+              gameLost = true;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 //creates a new 2d array 
