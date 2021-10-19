@@ -6,6 +6,8 @@
 // -used oop with classes to create individual cell objects for each index value in the 2d array
 // -implemented flood fill algorithm for adjacent cells when revealed
 // -added sound effects, used image sprite for bombs and pushed into array
+//
+// Instructions: Click on the grid to reveal squares, numbers signify how many a bombs a cell is touching, try to clear the grid without clicking any bombs!
 
 let gameLost = false;
 
