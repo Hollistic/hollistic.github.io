@@ -5,8 +5,7 @@
 // Extra for experts:
 // -used oop with classes to create individual cell objects for each index value in the 2d array
 // -implemented flood fill algorithm for adjacent cells when revealed
-// -added sound effects
-// -created a main menu
+// -added sound effects, used image sprite for bombs and pushed into array
 
 let gameLost = false;
 
@@ -14,9 +13,11 @@ let gridSize = 15;
 let grid;
 let cellSize;
 
-let bombSprite;
 let bombAmount = 0;
+
+let bombSprite;
 let boomSound;
+let musicLoop;
 
 //preload
 function preload() {
@@ -24,8 +25,14 @@ function preload() {
   boomSound = loadSound("assets/vine-boom.mp3");
 }
 
-//setup
+//on window resize run setup function
+function windowResized() {
+  setup();
+}
+
+
 function setup() {
+ 
   //creates largest square possible
   if (windowHeight < windowWidth) {
     createCanvas(windowHeight*0.9, windowHeight*0.9);
@@ -35,6 +42,7 @@ function setup() {
   }
   
 
+  //create new 2d array
   grid = createArray(gridSize);
   cellSize = floor(width / gridSize);
 
@@ -53,19 +61,15 @@ function setup() {
     } 
   }
 
-  
-}
-
-//on window resize
-function windowResized() {
-  setup();
+  //audio volume
+  boomSound.setVolume(0.1);
 }
 
 //main draw loop
 function draw() {
   background(255);
 
-  // displayGrid();
+  //displays the grid
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++){
       grid[y][x].showCells();
@@ -80,6 +84,7 @@ function draw() {
       for (let x = 0; x < gridSize; x++){
         grid[y][x].isRevealed = true;
         if (keyIsDown(82)) {
+          boomSound.stop();
           setup();
           gameLost = false;
         }
@@ -96,7 +101,6 @@ function draw() {
   }
 }
 
-// Will check for mouse presses on grid, (x,y) will be tested by mouseX, mouseY
 
 class Cell {
   constructor(x, y, size) {
@@ -127,13 +131,15 @@ class Cell {
     rect(this.x, this.y, this.size, this.size);
     
     if (this.isRevealed) {
-      //bombs sprite
+      //bombs sprite revealed
       if (this.isBomb) {
         image(bombSprite, this.x, this.y, this.size, this.size);
       }
       else {
+        //other revealed
         fill("lightgrey");
         rect(this.x, this.y, this.size, this.size);
+
         //text of neighbours
         if (this.neighbourAmount > 0) {
           fill(this.neighbourColors[this.neighbourAmount-1]);
@@ -145,6 +151,7 @@ class Cell {
     }
   }
   
+  //sets the cell's value isRevealed to true, if the cell has no neighbours flood fill function is run
   revealCells() {
     this.isRevealed = true;
     if (this.neighbourAmount === 0) {
@@ -160,16 +167,16 @@ class Cell {
       return this.neighbourAmount = -1;
     }
 
-    // checks from a range of -1 to 1 adjacent cells of the grid[y][x] to count the number of neighbours it shares
+    // checks from a range of -1 to 1 adjacent cells of the cell to count the number of neighbours it shares
     for (let adjX = -1; adjX < 2; adjX++) {
       for (let adjY = -1; adjY < 2; adjY++){
-        //the following is used to find the index value of the adjacent cells of [y][x]
+        //the x/y is used to find the index value of the adjacent cells
         let x = this.x/this.size + adjX;
         let y = this.y/this.size + adjY;
 
         //sanity check
         if (x > -1 && x < gridSize && y > -1 && y < gridSize) {
-          //counts neighbours
+          //counts bomb neighbours
           let adjacentCell = grid[x][y];
           if(adjacentCell.isBomb) {
             neighbourCounter++;
@@ -210,6 +217,7 @@ class Cell {
 }
 
 
+// Will check for mouse presses on grid, (x,y) will be tested by mouseX, mouseY
 function checkMousePress() {
   if (mouseIsPressed) {
     if (mouseButton === LEFT) {
@@ -217,6 +225,7 @@ function checkMousePress() {
         for (let x = 0; x < gridSize; x++){
           if (grid[y][x].mouseOnCell(mouseX, mouseY)) {
             grid[y][x].revealCells();
+            //if mouse pressed on bomb game is lost
             if (grid[y][x].isBomb) {
               boomSound.play();
               gameLost = true;
