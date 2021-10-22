@@ -73,7 +73,7 @@ function draw() {
 
   //displays the grid
   for (let y = 0; y < gridSize; y++) {
-    for (let x = 0; x < gridSize; x++){
+    for (let x = 0; x < gridSize; x++) {
       grid[y][x].showCells();
     }
   }
@@ -96,7 +96,7 @@ function draw() {
     fill("red");
     textAlign(CENTER);
     textSize(width/10);
-    text("boom", width/2, height/2);
+    text("bruh", width/2, height/2);
     fill("yellow");
     textSize(width/30);
     text("Press R to play again!", width/2, height/1.8);
